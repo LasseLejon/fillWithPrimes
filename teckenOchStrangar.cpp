@@ -3,13 +3,23 @@
 #include <string>
 
 using namespace std;
+int returneratal(const char str[]){
+    for(int i=0;true;i+=1)
+        if(str[i]==0)
+            return i;
+    return 999;
+}
+void provareturntal(){
+    int a = returneratal("Hej");
+    cout << a << endl;
 
+}
 void demoAvChar(){
-    char ch1= 'R';
-    char ch2=82;
-    int i1='R';
+    char ch1= 'A'+2;
+    int ch2=ch1;
+    int i1='A';
     int i2=82;
-    cout << ch1 << endl;
+    cout << "a= " << ch1 << endl;
     cout << ch2 << endl;
     cout << i1 << endl;
     cout << i2 << endl;
@@ -153,8 +163,7 @@ void automattestarVokalOchrKonsonant(){
 }
 string versalstrang(const string str){
     string tillVersal=str;
-    int size=str.size();
-    for(int i=0;i<size;i++)
+    for(unsigned int i=0;i<str.size();i++)
         tillVersal[i]=toupper(str[i]);
 
     return tillVersal;
@@ -182,17 +191,13 @@ void demoAvString(){
 string iSprik(string str){
     char x='i';
     char y='I';
-    int sizeS=str.size();
     const string vokaler="aeiouyAEIOUY";
-    int sizeV=vokaler.size();
-    for(int i=0;i<sizeS;i++){
-        for(int k=0;k<sizeV;k++){
+    for(unsigned int i=0;i<str.size();i++){
+        for(unsigned int k=0;k<vokaler.size();k++){
             if(str[i]==vokaler[k] && islower(str[i]))
                 str[i]=x;
             else if(str[i]==vokaler[k] && isupper(str[i]))
                 str[i]=y;
-
-
         }
     }
     return str;
@@ -203,14 +208,21 @@ void automattestaISprik(){
     assert( iSprik("ABCDEFGHIJKLMNOPQRSTUVXYZ") == "IBCDIFGHIJKLMNIPQRSTIVXIZ" );
 }
 
+void sS(char str[]){
+    for(int i=0;str[i]!=0;i++)
+        if(isdigit(str[i]))
+            str[i]='B';
+
+
+
+
+}
 string rovarsprak(string str){
     char x='o';
-    int sizeS=str.size();
     const string konsonanter="bcdfghjklmnpqrstvxzBCDFGHJKLMNPQRSTVXZ";
     string rs;
-    int sizeK=konsonanter.size();
-    for(int i=0;i<sizeS;i++){
-        for(int n=0; n<sizeK;n++){
+    for(unsigned int i=0;i<str.size();i++){
+        for(unsigned int n=0; n<konsonanter.size();n++){
             if(str[i]==konsonanter[n]){
                 rs+=str[i];
                 rs+=x;
@@ -218,7 +230,6 @@ string rovarsprak(string str){
         }
         rs+=str[i];
     }
-
     return rs;
 }
 
@@ -231,7 +242,83 @@ void testastringen(){
     cout << roven << endl;
 }
 
+string re(unsigned int step){
+    string s1 = "abcdefghijkl";
+    string s2 = "";
+    for(unsigned int i=0; i < s1.size();i+=step)
+        s2+=s1[i];
+    return s2;
+}
+void res(){
+    string b=re(2);
+    cout << b << endl;
+}
+bool isRovar(string str){
+    const string konsonanter="bcdfghjklmnpqrstvxzBCDFGHJKLMNPQRSTVXZ";
+    string kollaOmLika;
+    for(unsigned int i=0; i<str.size();i++){
+        kollaOmLika+=str[i];
+        for(unsigned int k=0; k<konsonanter.size();k++){
+            if(str[i]==konsonanter[k]){
+                kollaOmLika+='o';
+                kollaOmLika+=str[i];
+                i+=2;
+                break;
+            }
+        }
+    }
+    if(kollaOmLika==str)
+        return true;
+    else return false;
+}
+
+void automattestarRvarsprk(){
+    cout << "autotest is rovarsprak" << endl;
+    assert( isRovar("popror") );
+    assert( isRovar("poprorogogroramommomerorinongog aror kokulol") );
+    assert( !isRovar("poproror") );
+    cout << "done" << endl;
+}
+
+string tillKlartext(string str){
+    assert(isRovar(str));
+    const string vokaler="aeiouyAEIOUY";
+    const string konsonanter="bcdfghjklmnpqrstvxzBCDFGHJKLMNPQRSTVXZ";
+    string klartext;
+    for(unsigned int i=0;i<str.size();i++){
+        for(unsigned int k=0;k<konsonanter.size();k++){
+            if(str[i]==konsonanter[k]){
+                klartext+=str[i];
+                i+=2;
+            }
+        }
+        for(unsigned int m=0;m<vokaler.size();m++){
+            if(str[i]==32){
+                klartext+=str[i];
+                break;
+            }
+            if(str[i]==vokaler[m])
+                klartext+=str[i];
+        }
+    }
+    return klartext;
+}
+void testaTillKlartext(){
+    string test=tillKlartext("poprorogogroramommomerorinongog aror kokulol");
+    cout << test << endl;
+}
+void automattestaKlartextFrnRvarsprk(){
+    assert( tillKlartext( "poprorogogroramommomerorinongog aror kokulol")
+            == "programmering ar kul" );
+}
+
 void shortcutToTeckenOchStrangar(){
+    automattestaKlartextFrnRvarsprk();
+    testaTillKlartext();
+    automattestarRvarsprk();
+    res();
+    provareturntal();
+    demoAvChar();
     automattestaRovarsprak();
     testastringen();
     automattestaISprik();
