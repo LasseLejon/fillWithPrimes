@@ -332,15 +332,14 @@ void testaTillKlartextNy(){
 bool isRovarsprakNy(string str){
     const string konsonanter="bcdfghjklmnpqrstvxzBCDFGHJKLMNPQRSTVXZ";
     for(unsigned int i=0;i<str.size();i++){
+        unsigned int ix=i;
         for(unsigned int k=0;k<konsonanter.size();k++){
-            if(str[i]==konsonanter[k]&&(str[i+1]!='o'||str[i+2]!=str[i]))
+            if(str[ix]==konsonanter[k])
+                i+=2;
+            if(str[ix]==konsonanter[k]&&(str[ix+1]!='o'||str[ix+2]!=str[ix]))
                 return false;
         }
-        for(unsigned int m=0;m<konsonanter.size();m++)
-            if(str[i]==konsonanter[m])
-                i+=2;
-
-    }
+        }
     return true;
 }
 void testingIsrovarsprakNy(){
