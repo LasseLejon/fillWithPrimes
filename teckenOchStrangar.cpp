@@ -286,6 +286,10 @@ string tillKlartext(string str){
     const string konsonanter="bcdfghjklmnpqrstvxzBCDFGHJKLMNPQRSTVXZ";
     string klartext;
     for(unsigned int i=0;i<str.size();i++){
+        if(str[i]==32){
+            klartext+=str[i];
+            continue;
+        }
         for(unsigned int k=0;k<konsonanter.size();k++){
             if(str[i]==konsonanter[k]){
                 klartext+=str[i];
@@ -293,10 +297,6 @@ string tillKlartext(string str){
             }
         }
         for(unsigned int m=0;m<vokaler.size();m++){
-            if(str[i]==32){
-                klartext+=str[i];
-                break;
-            }
             if(str[i]==vokaler[m])
                 klartext+=str[i];
         }
@@ -311,8 +311,49 @@ void automattestaKlartextFrnRvarsprk(){
     assert( tillKlartext( "poprorogogroramommomerorinongog aror kokulol")
             == "programmering ar kul" );
 }
+string tillKlartextNy(string str){
+    assert(isRovar(str));
+    const string konsonanter="bcdfghjklmnpqrstvxzBCDFGHJKLMNPQRSTVXZ";
+    for(unsigned int i=0;i<str.size();i++){
+        for(unsigned int k=0;k<konsonanter.size();k++){
+            if(str[i]==konsonanter[k]){
+                str.erase(i+1,2);
+
+            }
+        }
+
+    }
+    return str;
+}
+void testaTillKlartextNy(){
+    string nyTest=tillKlartextNy("poprorogogroramommomerorinongog aror kokulol");
+    cout << nyTest << endl;
+}
+bool isRovarsprakNy(string str){
+    const string konsonanter="bcdfghjklmnpqrstvxzBCDFGHJKLMNPQRSTVXZ";
+    for(unsigned int i=0;i<str.size();i++){
+        for(unsigned int k=0;k<konsonanter.size();k++){
+            if(str[i]==konsonanter[k]&&(str[i+1]!='o'||str[i+2]!=str[i]))
+                return false;
+        }
+        for(unsigned int m=0;m<konsonanter.size();m++)
+            if(str[i]==konsonanter[m])
+                i+=2;
+
+    }
+    return true;
+}
+void testingIsrovarsprakNy(){
+    cout << "autotest is rovarsprak" << endl;
+    assert( isRovarsprakNy("popror") );
+    assert( isRovarsprakNy("poprorogogroramommomerorinongog aror kokulol") );
+    assert( !isRovarsprakNy("poprororo") );
+    cout << "done" << endl;
+}
 
 void shortcutToTeckenOchStrangar(){
+    testingIsrovarsprakNy();
+    testaTillKlartextNy();
     automattestaKlartextFrnRvarsprk();
     testaTillKlartext();
     automattestarRvarsprk();
